@@ -1,3 +1,8 @@
 <h1>
   {{title}}
 </h1>
+<form (submit)="login()">
+  <label>Username: <input type="text" [(ngModel)]="username" name="username"></label>
+  <label>Password: <input type="text" [(ngModel)]="password" name="password" autofocus></label>
+  <button type="submit">Login</button>
+</form>
