@@ -1,6 +1,6 @@
 import 'rxjs';
 import { Component } from '@angular/core';
-import { Http } from '@angular/http'
+import { Http } from '@angular/http';
 
 import { LogInService } from './log-in.service';
 
@@ -15,7 +15,7 @@ export class AppComponent {
   password = '';
   user;
 
-  constructor(private http:Http, private logInService:LogInService){
+  constructor(private http: Http, private logInService: LogInService) {
     this.logInService.user$.subscribe(u => this.user = u);
   }
 

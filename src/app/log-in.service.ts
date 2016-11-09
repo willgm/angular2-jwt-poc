@@ -6,11 +6,11 @@ import { LocalStorageService } from './utils/local-storage.service';
 @Injectable()
 export class LogInService {
 
-  user$:Observable<any>;
+  user$: Observable<any>;
 
   private userObserver;
 
-  constructor(private storage:LocalStorageService) {
+  constructor(private storage: LocalStorageService) {
     this.userObserver = new Subject;
     this.user$ = Observable.from(this.userObserver)
       .startWith(this.getUser());

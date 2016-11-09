@@ -1,11 +1,11 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { LogInService } from './log-in.service';
 import { LocalStorageService } from './utils/local-storage.service';
 
 const user = {name: 'name'}, token = 'tokentoken';
 
-let subject:LogInService;
+let subject: LogInService;
 
 describe('Service: LogIn', () => {
   beforeEach(() => {
@@ -34,15 +34,14 @@ describe('Service: LogIn', () => {
     });
 
     it('should update the user stream', () => {
-      let userData, newUser = Object.assign({}, user, {newProp:666});
+      let userData, newUser = Object.assign({}, user, {newProp: 666});
       subject.user$.subscribe(u => userData = u);
-      subject.logIn({user:newUser, token});
+      subject.logIn({user: newUser, token});
       expect(userData).toEqual(newUser);
     });
-    
+
   });
 
-  
   describe('when loging out', () => {
 
     it('should clear token and user data at local storage', () => {

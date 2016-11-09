@@ -1,7 +1,7 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { LocalStorageService } from './local-storage.service';
 
-let subject:LocalStorageService;
+let subject: LocalStorageService;
 
 describe('Service: LocalStorage', () => {
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('Service: LocalStorage', () => {
     });
 
     it('should set an object at localStorage', () => {
-      subject.set('key', {a:1});
+      subject.set('key', {a: 1});
       expect(localStorage.getItem('key')).toBe('{"a":1}');
     });
 
@@ -48,12 +48,12 @@ describe('Service: LocalStorage', () => {
     });
 
     it('should set an object at localStorage', () => {
-      subject.set({key: {a:1}});
+      subject.set({key: {a: 1}});
       expect(localStorage.getItem('key')).toBe('{"a":1}');
     });
 
     it('should set more then one item at localStorage', () => {
-      subject.set({a:11, b:22});
+      subject.set({a: 11, b: 22});
       expect(subject.get('a')).toBe('11');
       expect(subject.get('b')).toBe('22');
     });
@@ -67,7 +67,7 @@ describe('Service: LocalStorage', () => {
 
   it('should get an object from localStorage', () => {
     localStorage.setItem('key', '{"a": 1}');
-    expect(subject.getObject('key')).toEqual({a:1});
+    expect(subject.getObject('key')).toEqual({a: 1});
   });
 
   it('should clear an item from localStorage', () => {
