@@ -1,8 +1,10 @@
 import 'rxjs';
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
+import { AuthHttp } from 'angular2-jwt';
 
 import { LogInService } from './log-in.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +17,9 @@ export class AppComponent {
   password = '';
   user;
 
-  constructor(private http: Http, private logInService: LogInService) {
+  randomUser$;
+
+  constructor(private http: Http, private authHttp: AuthHttp, private logInService: LogInService) {
     this.logInService.user$.subscribe(u => this.user = u);
   }
 
@@ -24,14 +28,24 @@ export class AppComponent {
       username: this.username,
       password: this.password
     })
+    .do(() => this.randomUser$ = null)
     .map(r => r.json())
     .subscribe(
       data => this.logInService.logIn(data),
-      error => alert(error)
+      error => alert('login error: ' + error.toString())
     );
   }
 
   logout() {
     this.logInService.logOut();
+  }
+
+  getRandomUser() {
+    this.randomUser$ = this.authHttp.get('http://localhost:3000/random-user')
+      .map(r => r.json())
+      .catch(error => {
+        alert('random user error: ' + error.toString());
+        return Observable.of(null);
+      });
   }
 }

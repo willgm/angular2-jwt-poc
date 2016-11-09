@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { LogInService } from './log-in.service';
+import { AUTH_PROVIDERS } from 'angular2-jwt';
 
 const title = 'Angular JWT POC!';
 
@@ -22,6 +23,7 @@ describe('App: AngularJwt', () => {
       providers: [
         LocalStorageService,
         LogInService,
+        AUTH_PROVIDERS,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
