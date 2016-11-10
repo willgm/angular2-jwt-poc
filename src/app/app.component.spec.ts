@@ -1,12 +1,12 @@
-import { LocalStorageService } from './utils/local-storage.service';
+import { AUTH_PROVIDERS, JwtHelper } from 'angular2-jwt';
 import { TestBed, async } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { LocalStorageService } from './utils/local-storage.service';
 import { AppComponent } from './app.component';
 import { LogInService } from './log-in.service';
-import { AUTH_PROVIDERS } from 'angular2-jwt';
 
 const title = 'Angular JWT POC!';
 
@@ -24,6 +24,7 @@ describe('App: AngularJwt', () => {
         LocalStorageService,
         LogInService,
         AUTH_PROVIDERS,
+        JwtHelper,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });

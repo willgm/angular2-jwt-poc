@@ -1,5 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { JwtHelper } from 'angular2-jwt';
 
 import { LocalStorageService } from './utils/local-storage.service';
 
@@ -10,7 +11,7 @@ export class LogInService {
 
   private userObserver;
 
-  constructor(private storage: LocalStorageService) {
+  constructor(private storage: LocalStorageService, private jwt: JwtHelper) {
     this.userObserver = new Subject;
     this.user$ = Observable.from(this.userObserver)
       .startWith(this.getUser());
@@ -28,7 +29,26 @@ export class LogInService {
   }
 
   getUser() {
-    return this.storage.getObject('user_data');
+    console.log('getUser')
+    return this.isLoggedIn() ? this.storage.getObject('user_data') : null;
+  }
+
+  getToken() {
+    return this.isLoggedIn() ? this.storage.get('id_token') : null;
+  }
+
+  isLoggedIn(): boolean {
+    console.log('isLoggedIn')
+    const token = this.storage.get('id_token');
+    if (!token) {
+      return false;
+    }
+
+    if (this.jwt.isTokenExpired(token)) {
+      this.logOut();
+      return false;
+    }
+    return true;
   }
 
 }

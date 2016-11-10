@@ -43,6 +43,7 @@ export class AppComponent {
   getRandomUser() {
     this.randomUser$ = this.authHttp.get('http://localhost:3000/random-user')
       .map(r => r.json())
+      .startWith('Loading...')
       .catch(error => {
         alert('random user error: ' + error.toString());
         return Observable.of(null);
