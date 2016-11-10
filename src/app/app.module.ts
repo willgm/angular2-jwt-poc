@@ -1,12 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { AUTH_PROVIDERS } from 'angular2-jwt';
+import { HttpModule, Http } from '@angular/http';
+import { AUTH_PROVIDERS, AuthHttp, AuthConfig, JwtHelper } from 'angular2-jwt';
 
 import { AppComponent } from './app.component';
 import { LocalStorageService } from './utils/local-storage.service';
 import { LogInService } from './log-in.service';
+
+function getAuthHttp(http, logInService) {
+  return new AuthHttp(new AuthConfig({
+    tokenGetter: (() => logInService.getToken()),
+  }), http);
+}
 
 @NgModule({
   declarations: [
@@ -19,8 +25,14 @@ import { LogInService } from './log-in.service';
   ],
   providers: [
     AUTH_PROVIDERS,
+    {
+      provide: AuthHttp,
+      useFactory: getAuthHttp,
+      deps: [Http, LogInService]
+    },
     LocalStorageService,
     LogInService,
+    JwtHelper,
   ],
   bootstrap: [AppComponent]
 })
