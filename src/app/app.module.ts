@@ -7,6 +7,7 @@ import { AUTH_PROVIDERS, AuthHttp, AuthConfig, JwtHelper } from 'angular2-jwt';
 import { AppComponent } from './app.component';
 import { LocalStorageService } from './utils/local-storage.service';
 import { LogInService } from './log-in.service';
+import { ContextDirective } from './context.directive';
 
 function getAuthHttp(http, logInService) {
   return new AuthHttp(new AuthConfig({
@@ -16,7 +17,8 @@ function getAuthHttp(http, logInService) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ContextDirective,
   ],
   imports: [
     BrowserModule,

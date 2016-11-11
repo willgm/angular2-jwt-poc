@@ -1,21 +1,23 @@
-<h1>
-  {{title}}
-</h1>
+<article *context="let user on this.user$ | async">
+  <h1>
+    {{title}}
+  </h1>
 
-<form (submit)="login()" *ngIf="!user">
-  <label>Username: <input type="text" [(ngModel)]="username" name="username"></label>
-  <label>Password: <input type="text" [(ngModel)]="password" name="password" autofocus></label>
-  <button type="submit">Login</button>
-</form>
+  <form (submit)="login()" *ngIf="!user">
+    <label>Username: <input type="text" [(ngModel)]="username" name="username"></label>
+    <label>Password: <input type="text" [(ngModel)]="password" name="password" autofocus></label>
+    <button type="submit">Login</button>
+  </form>
 
-<article *ngIf="user">
+  <section *ngIf="user">
 
-  <h2>Wellcome {{user.username}}!</h2>
+    <h2>Wellcome {{user.username}}!</h2>
 
-  <button (click)="logout()">logout</button>
+    <button (click)="logout()">logout</button>
 
-  <button (click)="getRandomUser()">random user data</button>
+    <button (click)="getRandomUser()">random user data</button>
 
-  <pre>{{randomUser$ | async | json}}</pre>
+    <pre>{{randomUser$ | async | json}}</pre>
 
+  </section>
 </article>

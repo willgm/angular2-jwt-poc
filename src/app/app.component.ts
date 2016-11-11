@@ -15,12 +15,12 @@ export class AppComponent {
   title = 'Angular JWT POC!';
   username = 'will';
   password = '';
-  user;
+  user$: Observable<any>;
 
   randomUser$;
 
   constructor(private http: Http, private authHttp: AuthHttp, private logInService: LogInService) {
-    this.logInService.user$.subscribe(u => this.user = u);
+    this.user$ = this.logInService.user$;
   }
 
   login() {

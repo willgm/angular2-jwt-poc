@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { LocalStorageService } from './utils/local-storage.service';
 import { AppComponent } from './app.component';
 import { LogInService } from './log-in.service';
+import { ContextDirective } from './context.directive';
 
 const title = 'Angular JWT POC!';
 
@@ -15,6 +16,7 @@ describe('App: AngularJwt', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
+        ContextDirective,
       ],
       imports: [
         FormsModule,
