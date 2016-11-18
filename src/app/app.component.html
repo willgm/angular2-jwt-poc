@@ -15,7 +15,7 @@
 
     <button (click)="logout()">logout</button>
 
-    <button (click)="getRandomUser()">random user data</button>
+    <button (click)="newRandomUser.next()">random user data</button>
 
     <pre>{{randomUser$ | async | json}}</pre>
 

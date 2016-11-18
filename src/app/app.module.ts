@@ -12,6 +12,7 @@ import { ContextDirective } from './context.directive';
 function getAuthHttp(http, logInService) {
   return new AuthHttp(new AuthConfig({
     tokenGetter: (() => logInService.getToken()),
+    noJwtError: true,
   }), http);
 }
 

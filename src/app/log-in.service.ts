@@ -9,10 +9,9 @@ export class LogInService {
 
   user$: Observable<any>;
 
-  private userObserver;
+  private userObserver = new Subject;
 
   constructor(private storage: LocalStorageService, private jwt: JwtHelper) {
-    this.userObserver = new Subject;
     this.user$ = this.userObserver.merge(
       Observable.defer(() => Observable.of(this.getUser()))
     );
