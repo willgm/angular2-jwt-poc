@@ -8,6 +8,7 @@ import { LocalStorageService } from './utils/local-storage.service';
 import { AppComponent } from './app.component';
 import { LogInService } from './log-in.service';
 import { ContextDirective } from './context.directive';
+import { RandomUserService } from './random-user.service';
 
 const title = 'Angular JWT POC!';
 
@@ -25,6 +26,7 @@ describe('App: AngularJwt', () => {
       providers: [
         LocalStorageService,
         LogInService,
+        RandomUserService,
         AUTH_PROVIDERS,
         JwtHelper,
       ],

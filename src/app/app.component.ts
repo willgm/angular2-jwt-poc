@@ -5,6 +5,7 @@ import { AuthHttp } from 'angular2-jwt';
 
 import { LogInService } from './log-in.service';
 import { Observable, Subject } from 'rxjs';
+import { RandomUserService } from './random-user.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,12 @@ export class AppComponent {
     .let(i => this.getRandomUser(i))
     .startWith('Get a new random user!');
 
-  constructor(private http: Http, private authHttp: AuthHttp, private logInService: LogInService) {}
+  constructor(
+    private http: Http,
+    private authHttp: AuthHttp,
+    private logInService: LogInService,
+    private randomUser: RandomUserService
+  ) {}
 
   login() {
     this.http.post('http://localhost:3000/login', {
@@ -42,8 +48,7 @@ export class AppComponent {
   }
 
   getRandomUser(input) {
-    return input.switchMap(() => this.authHttp.get('http://localhost:3000/random-user')
-      .map(r => r.json())
+    return input.switchMap(() => this.randomUser.get()
       .startWith('Loading...')
       .catch(error => {
         alert('get random user error: ' + error.toString());

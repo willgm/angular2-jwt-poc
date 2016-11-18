@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { LocalStorageService } from './utils/local-storage.service';
 import { LogInService } from './log-in.service';
 import { ContextDirective } from './context.directive';
+import { RandomUserService } from './random-user.service';
 
 function getAuthHttp(http, logInService) {
   return new AuthHttp(new AuthConfig({
@@ -35,6 +36,7 @@ function getAuthHttp(http, logInService) {
     },
     LocalStorageService,
     LogInService,
+    RandomUserService,
     JwtHelper,
   ],
   bootstrap: [AppComponent]
