@@ -7,25 +7,26 @@ import { LocalStorageService } from './utils/local-storage.service';
 @Injectable()
 export class LogInService {
 
-  user$: Observable<any>;
+  private userObserver$ = new Subject;
 
-  private userObserver = new Subject;
+  user$: Observable<any> = this.userObserver$.merge(
+    Observable.defer(() => Observable.of(this.getUser()))
+  );
 
-  constructor(private storage: LocalStorageService, private jwt: JwtHelper) {
-    this.user$ = this.userObserver.merge(
-      Observable.defer(() => Observable.of(this.getUser()))
-    );
-  }
+  constructor(
+    private storage: LocalStorageService,
+    private jwt: JwtHelper,
+  ) {}
 
   logIn({token, user}) {
     this.storage.set('id_token', token);
     this.storage.set('user_data', user);
-    this.userObserver.next(user);
+    this.userObserver$.next(user);
   }
 
   logOut() {
     this.storage.clear('id_token', 'user_data');
-    this.userObserver.next(null);
+    this.userObserver$.next(null);
   }
 
   getUser() {

@@ -1,7 +1,6 @@
 import 'rxjs';
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
-import { AuthHttp } from 'angular2-jwt';
 
 import { LogInService } from './log-in.service';
 import { Observable, Subject } from 'rxjs';
@@ -18,17 +17,16 @@ export class AppComponent {
   password = '';
   user$: Observable<any> = this.logInService.user$;
 
-  newRandomUser: Subject<any> = new Subject;
+  newRandomUser$: Subject<any> = new Subject;
 
-  randomUser$: Observable<any> = this.newRandomUser
+  randomUser$: Observable<any> = this.newRandomUser$
     .let(i => this.getRandomUser(i))
     .startWith('Get a new random user!');
 
   constructor(
     private http: Http,
-    private authHttp: AuthHttp,
     private logInService: LogInService,
-    private randomUser: RandomUserService
+    private randomUser: RandomUserService,
   ) {}
 
   login() {
