@@ -1,8 +1,8 @@
 import { Directive, Input, ViewContainerRef, TemplateRef, EmbeddedViewRef, OnChanges } from '@angular/core';
 
-@Directive({selector: '[context][contextOn]'})
+@Directive({selector: '[appContext][appContextOn]'})
 export class ContextDirective implements OnChanges {
-  @Input() contextOn: any;
+  @Input() appContextOn: any;
 
   private view: EmbeddedViewRef<any>;
 
@@ -12,7 +12,7 @@ export class ContextDirective implements OnChanges {
     if (!this.view) {
       this.view = this.viewContainer.createEmbeddedView(this.template);
     }
-    this.view.context.$implicit = state.contextOn.currentValue;
+    this.view.context.$implicit = state.appContextOn.currentValue;
   }
 
 }
