@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelper } from 'angular2-jwt';
 
 import { LocalStorageService } from './utils/local-storage.service';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class LogInService {
@@ -16,9 +17,20 @@ export class LogInService {
   constructor(
     private storage: LocalStorageService,
     private jwt: JwtHelper,
+    private http: Http,
   ) {}
 
-  logIn({token, user}) {
+  logIn({username, password}) {
+    return this.http.post('http://localhost:3000/login', {
+      username,
+      password
+    })
+    .map(r => r.json())
+    .do(data => this.startSession(data))
+    .toPromise();
+  }
+
+  private startSession({token, user}) {
     this.storage.set('id_token', token);
     this.storage.set('user_data', user);
     this.userObserver$.next(user);

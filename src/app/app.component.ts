@@ -1,6 +1,5 @@
 import 'rxjs';
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
 
 import { LogInService } from './log-in.service';
 import { Observable, Subject } from 'rxjs';
@@ -24,21 +23,16 @@ export class AppComponent {
     .startWith('Get a new random user!');
 
   constructor(
-    private http: Http,
     private logInService: LogInService,
     private randomUser: RandomUserService,
   ) {}
 
   login() {
-    this.http.post('http://localhost:3000/login', {
+    this.logInService.logIn({
       username: this.username,
       password: this.password
     })
-    .map(r => r.json())
-    .subscribe(
-      data => this.logInService.logIn(data),
-      error => alert('login error: ' + error.toString())
-    );
+    .catch(e => alert('login error: ' + e.toString()));
   }
 
   logout() {
@@ -47,11 +41,9 @@ export class AppComponent {
 
   getRandomUser(input) {
     return input.switchMap(() => this.randomUser.get()
+      .retry(2)
       .startWith('Loading...')
-      .catch(error => {
-        alert('get random user error: ' + error.toString());
-        return Observable.of(null);
-      })
+      .catch(e => Observable.of('random user fetch error: ' + e.toString()))
     );
   }
 }

@@ -3,14 +3,20 @@ import { JwtHelper } from 'angular2-jwt';
 
 import { LogInService } from './log-in.service';
 import { LocalStorageService } from './utils/local-storage.service';
+import { Http } from '@angular/http';
+import { Subject } from 'rxjs';
 
-const user = {name: 'name'}, token = 'tokentoken';
+const user = {name: 'name'},
+  token = 'tokentoken',
+  logInUser = { username: 'username', password: 'password' };
 
 let subject: LogInService,
   subjectLogOutSpy: jasmine.Spy,
   subjectIsLoggedInSpy: jasmine.Spy,
   localStorageGetSpy: jasmine.Spy,
-  isTokenExpiredSpy: jasmine.Spy;
+  isTokenExpiredSpy: jasmine.Spy,
+  http$: Subject<any>,
+  httpSpy: any;
 
 describe('Service: LogIn', () => {
   beforeEach(() => {
@@ -20,9 +26,13 @@ describe('Service: LogIn', () => {
     isTokenExpiredSpy = spyOn(JwtHelper.prototype, 'isTokenExpired').and.returnValue(false);
     subjectIsLoggedInSpy = spyOn(LogInService.prototype, 'isLoggedIn').and.callThrough();
     subjectLogOutSpy = spyOn(LogInService.prototype, 'logOut').and.callThrough();
+    http$ =  new Subject;
+    httpSpy = jasmine.createSpyObj('Http', ['post']);
+    (<jasmine.Spy>httpSpy.post).and.returnValue(http$);
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: Http, useFactory: () => httpSpy },
         JwtHelper,
         LogInService,
         LocalStorageService,
@@ -34,21 +44,73 @@ describe('Service: LogIn', () => {
 
   describe('when loging in', () => {
 
-    it('should set token at local storage', () => {
-      subject.logIn({token, user});
-      expect(LocalStorageService.prototype.set).toHaveBeenCalledWith('id_token', token);
+    let logInRequest: Promise<any>;
+
+    beforeEach(() => {
+      logInRequest = subject.logIn(logInUser);
     });
 
-    it('should set user data at local storage', () => {
-      subject.logIn({user, token});
-      expect(LocalStorageService.prototype.set).toHaveBeenCalledWith('user_data', user);
+    it('should send a login request to the server', () => {
+      expect(httpSpy.post).toHaveBeenCalledWith(
+        'http://localhost:3000/login',
+        jasmine.objectContaining(logInUser)
+      );
     });
 
-    it('should update the user stream', () => {
-      let userData, newUser = Object.assign({}, user, {newProp: 666});
-      subject.user$.subscribe(u => userData = u);
-      subject.logIn({user: newUser, token});
-      expect(userData).toEqual(newUser);
+    describe('when the request were successful', () => {
+      let newUser, currentUserData;
+
+      beforeEach(() => {
+        newUser = Object.assign({}, user, {newProp: 666});
+        subject.user$.subscribe(u => currentUserData = u);
+        http$.next({json: () => ({token, user: newUser})});
+        http$.complete();
+      });
+
+      it('should end with the login data', () => {
+        logInRequest.then(d => expect(d).toEqual({token, user: newUser}));
+      });
+
+      it('should set token at local storage', () => {
+        expect(LocalStorageService.prototype.set).toHaveBeenCalledWith('id_token', token);
+      });
+
+      it('should set user data at local storage', () => {
+        expect(LocalStorageService.prototype.set).toHaveBeenCalledWith('user_data', newUser);
+      });
+
+      it('should update the user stream', () => {
+        expect(currentUserData).toEqual(newUser);
+      });
+
+    });
+
+    describe('when the request has an error', () => {
+      let currentUserData, error;
+
+      beforeEach(() => {
+        logInRequest.catch(e => {}); // just to avoid zone.js stacktrace
+        subject.user$.subscribe(u => currentUserData = u);
+        error = new Error;
+        http$.error(error);
+      });
+
+      it('should bubble the error', () => {
+        logInRequest.catch(e => expect(e).toBe(error));
+      });
+
+      it('should not set token at local storage', () => {
+        expect(LocalStorageService.prototype.set).not.toHaveBeenCalled();
+      });
+
+      it('should not set user data at local storage', () => {
+        expect(LocalStorageService.prototype.set).not.toHaveBeenCalled();
+      });
+
+      it('should not update the user stream', () => {
+        expect(currentUserData).toBeNull();
+      });
+
     });
 
   });
