@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { ContextDirective } from './context.directive';
 import { LocalStorageService } from './core/local-storage/local-storage.service';
 import { LogInService } from './core/log-in/log-in.service';
 import { RandomUserService } from './core/random-user/random-user.service';
+import { ContextDirective } from './shared/context/context.directive';
 
 const title = 'Angular JWT POC!';
 

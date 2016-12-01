@@ -1,19 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { ContextDirective } from './context.directive';
 import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContextDirective,
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    SharedModule,
     CoreModule,
   ],
   providers: [
