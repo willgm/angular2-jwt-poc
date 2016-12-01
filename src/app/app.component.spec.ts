@@ -4,11 +4,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { LocalStorageService } from './utils/local-storage.service';
 import { AppComponent } from './app.component';
-import { LogInService } from './log-in.service';
 import { ContextDirective } from './context.directive';
-import { RandomUserService } from './random-user.service';
+import { LocalStorageService } from './core/local-storage/local-storage.service';
+import { LogInService } from './core/log-in/log-in.service';
+import { RandomUserService } from './core/random-user/random-user.service';
 
 const title = 'Angular JWT POC!';
 

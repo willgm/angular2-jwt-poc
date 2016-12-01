@@ -1,9 +1,9 @@
 import 'rxjs';
 import { Component } from '@angular/core';
 
-import { LogInService } from './log-in.service';
 import { Observable, Subject } from 'rxjs';
-import { RandomUserService } from './random-user.service';
+import { LogInService } from './core/log-in/log-in.service';
+import { RandomUserService } from './core/random-user/random-user.service';
 
 @Component({
   selector: 'app-root',

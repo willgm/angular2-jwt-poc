@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { JwtHelper } from 'angular2-jwt';
 
 import { LogInService } from './log-in.service';
-import { LocalStorageService } from './utils/local-storage.service';
 import { Http } from '@angular/http';
 import { Subject } from 'rxjs';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 
 const user = {name: 'name'},
   token = 'tokentoken',

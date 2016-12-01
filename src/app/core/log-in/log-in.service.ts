@@ -2,8 +2,8 @@ import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { JwtHelper } from 'angular2-jwt';
 
-import { LocalStorageService } from './utils/local-storage.service';
 import { Http } from '@angular/http';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 
 @Injectable()
 export class LogInService {
