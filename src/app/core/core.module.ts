@@ -5,6 +5,7 @@ import { AuthHttp, AuthConfig, AUTH_PROVIDERS, JwtHelper } from 'angular2-jwt';
 import { Http, HttpModule } from '@angular/http';
 import { LogInService } from './log-in/log-in.service';
 import { RandomUserService } from './random-user/random-user.service';
+import { CONFIG_PROVIDERS } from '../app.config';
 
 function getAuthHttp(http, logInService) {
   return new AuthHttp(new AuthConfig({
@@ -20,6 +21,7 @@ function getAuthHttp(http, logInService) {
   ],
   providers: [
     AUTH_PROVIDERS,
+    CONFIG_PROVIDERS,
     {
       provide: AuthHttp,
       useFactory: getAuthHttp,
