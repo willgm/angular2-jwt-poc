@@ -5,6 +5,8 @@ import { LogInService } from './log-in.service';
 import { Http } from '@angular/http';
 import { Subject } from 'rxjs';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { environment } from '../../app.config';
+import { CoreModule } from '../core.module';
 
 const user = {name: 'name'},
   token = 'tokentoken',
@@ -31,11 +33,11 @@ describe('Service: LogIn', () => {
     (<jasmine.Spy>httpSpy.post).and.returnValue(http$);
 
     TestBed.configureTestingModule({
+      imports: [
+        CoreModule,
+      ],
       providers: [
         { provide: Http, useFactory: () => httpSpy },
-        JwtHelper,
-        LogInService,
-        LocalStorageService,
       ]
     });
 
@@ -52,7 +54,7 @@ describe('Service: LogIn', () => {
 
     it('should send a login request to the server', () => {
       expect(httpSpy.post).toHaveBeenCalledWith(
-        'http://localhost:3000/login',
+        `${environment.API_URL}/login`,
         jasmine.objectContaining(logInUser)
       );
     });

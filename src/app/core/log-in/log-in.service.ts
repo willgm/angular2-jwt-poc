@@ -1,9 +1,10 @@
 import { Observable, Subject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { JwtHelper } from 'angular2-jwt';
 
 import { Http } from '@angular/http';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { API_URL } from '../../app.config';
 
 @Injectable()
 export class LogInService {
@@ -18,10 +19,11 @@ export class LogInService {
     private storage: LocalStorageService,
     private jwt: JwtHelper,
     private http: Http,
+    @Inject(API_URL) private apiURL,
   ) {}
 
   logIn({username, password}) {
-    return this.http.post('http://localhost:3000/login', {
+    return this.http.post(`${this.apiURL}/login`, {
       username,
       password
     })
